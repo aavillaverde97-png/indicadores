@@ -14,7 +14,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@300;400;500;600;700;800&family=Syne:wght@700;800&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/chartjs-chart-treemap@2.3.0/dist/chartjs-chart-treemap.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-chart-treemap@2.3.0/dist/chartjs-chart-treemap.min.js"></script>
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <style>
@@ -193,7 +193,8 @@ function treemapDraw(){var t=$('#tipo').value,data=P.treemap[t]||[];
    title:function(i){return i[0].raw._data.barrio},
    label:function(i){var d=i.raw._data;return nf(d.n)+' avisos'+(d.ppm?' - '+nf(d.ppm)+' USD/m2':'')}}}}}});}
 
-function renderAll(){cards();rank();drawMap();scatter();treemapDraw();}
-$('#tipo').onchange=renderAll;renderAll();don();
+function safe(fn){try{fn()}catch(e){console.error(fn.name||'render',e)}}
+function renderAll(){safe(cards);safe(rank);safe(drawMap);safe(scatter);safe(treemapDraw);}
+$('#tipo').onchange=renderAll;renderAll();safe(don);
 setTimeout(function(){map.invalidateSize()},250);
 </script></body></html>
