@@ -1,0 +1,10 @@
+# Seguridad: este repo es PUBLICO. Solo se permiten los archivos del sitio.
+# Todo lo demas (scripts, datos crudos, json) queda ignorado para que NUNCA se publique.
+*
+
+# Excepciones: lo unico que puede subirse
+!index.html
+!robots.txt
+!sitemap.xml
+!.nojekyll
+!.gitignore
