@@ -1,7 +1,16 @@
 <!DOCTYPE html><html lang="es"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Patrimo - Indice Inmobiliario de Parana</title>
-<meta name="description" content="Datos de mercado inmobiliario de Parana, abiertos. Precio del m2 por barrio.">
+<title>Precio del m2 en Parana por barrio | Patrimo - Indice Inmobiliario</title>
+<meta name="description" content="Precio del metro cuadrado en Parana (Entre Rios) por barrio. Departamentos mediana USD 1173/m2, casas USD 727/m2. Datos de mercado actualizados.">
+<meta name="keywords" content="precio metro cuadrado Parana, propiedades Parana, departamentos en venta Parana, casas en venta Parana, valor m2 por barrio, mercado inmobiliario Entre Rios, Patrimo">
+<meta name="robots" content="index,follow"><meta name="author" content="Patrimo">
+<link rel="canonical" href="https://aavillaverde97-png.github.io/indicadores/">
+<meta property="og:type" content="website"><meta property="og:title" content="Precio del m2 en Parana por barrio | Patrimo">
+<meta property="og:description" content="Precio del metro cuadrado en Parana (Entre Rios) por barrio. Departamentos mediana USD 1173/m2, casas USD 727/m2. Datos de mercado actualizados."><meta property="og:url" content="https://aavillaverde97-png.github.io/indicadores/">
+<meta property="og:locale" content="es_AR"><meta property="og:site_name" content="Patrimo">
+<meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="Precio del m2 en Parana por barrio | Patrimo">
+<meta name="twitter:description" content="Precio del metro cuadrado en Parana (Entre Rios) por barrio. Departamentos mediana USD 1173/m2, casas USD 727/m2. Datos de mercado actualizados.">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebSite", "name": "Patrimo", "url": "https://aavillaverde97-png.github.io/indicadores/", "inLanguage": "es-AR", "description": "Precio del metro cuadrado en Parana (Entre Rios) por barrio. Departamentos mediana USD 1173/m2, casas USD 727/m2. Datos de mercado actualizados.", "publisher": {"@type": "Organization", "name": "Patrimo", "url": "https://aavillaverde97-png.github.io/indicadores/", "areaServed": {"@type": "City", "name": "Parana, Entre Rios, Argentina"}}}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@300;400;500;600;700;800&family=Syne:wght@700;800&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
@@ -21,6 +30,8 @@ header{display:flex;flex-direction:column;gap:6px;padding:6px 0 18px}
 .logo{font-family:'Syne',sans-serif;font-weight:800;font-size:28px;letter-spacing:-.5px;color:var(--txt)}
 .logo .dot{color:var(--teal)}
 .kick{font-size:14px;color:var(--mut)}
+.intro{font-size:14px;color:var(--txt);line-height:1.7;margin-bottom:22px;max-width:780px}
+.intro b{font-weight:600}
 .upd{align-self:flex-start;margin-top:6px;font-size:11.5px;color:var(--gold);background:var(--goldb);border:1px solid var(--goldbd);border-radius:999px;padding:4px 12px}
 .legalbar{background:var(--s2);border:1px solid var(--bd);border-radius:16px;padding:12px 16px;font-size:12.5px;color:var(--mut);margin-bottom:20px;line-height:1.6}
 .legalbar b{color:var(--txt)}
@@ -50,9 +61,7 @@ footer b{color:var(--txt)}
   <div class="upd">Actualizado 2026-06-29 &middot; base: avisos publicos de El Once / Clasionce</div>
 </header>
 
-<div class="legalbar">
-  <b>Informacion estadistica de referencia.</b> Son medianas de <b>precios de publicacion</b> (no de cierre) calculadas sobre avisos publicos, con fines orientativos. <b>No constituye una tasacion, valuacion ni asesoramiento profesional</b> en los terminos de la Ley 25.028 ni de la normativa de corretaje inmobiliario. Para una tasacion oficial, consulta a un corredor inmobiliario matriculado.
-</div>
+<p class="intro"><b>Patrimo</b> muestra el valor de referencia del metro cuadrado en <b>Parana, Entre Rios</b>, por barrio, para departamentos, casas y locales en venta. Hoy la mediana es de <b>USD 1173/m2</b> en departamentos y <b>USD 727/m2</b> en casas. Las zonas de mayor valor son Rocamora, Parque Urquiza, Centro; las mas accesibles, San Agustín, Oro Verde, 25 de Junio. Datos sobre 1857 avisos en 20 barrios, actualizados a 2026-06-29.</p>
 
 <div class="ctrls"><label class="mut" style="font-weight:500">Tipo de propiedad:</label>
   <select id="tipo"><option value="Departamento">Departamentos</option><option value="Casa">Casas</option><option value="Local">Locales</option></select>
@@ -79,8 +88,7 @@ footer b{color:var(--txt)}
 </div>
 
 <footer>
-  <b>Metodologia.</b> Valores elaborados a partir de avisos de venta publicados; se usan medianas de USD/m2 por barrio y tipo. Se excluyen alquileres y barrios con menos de 4 avisos. Los datos pueden contener errores, omisiones o estar desactualizados. <b>Patrimo no se responsabiliza</b> por decisiones tomadas en base a esta informacion y no recomienda ni desaconseja operaciones especificas.<br>
-  Fuente de los avisos: El Once / Clasionce &middot; Cartografia: OpenStreetMap, CARTO &middot; &copy; Patrimo
+  Valores de referencia con fines informativos. No constituye una tasacion ni asesoramiento profesional. &copy; 2026 Patrimo. Todos los derechos reservados.
 </footer>
 
 </div>
