@@ -62,6 +62,9 @@ input[type=number]{font-family:inherit;background:var(--s1);border:1px solid var
 .kpi{background:var(--s2);border:1px solid var(--bd);border-radius:14px;padding:12px}
 .kpi .kl{font-size:11px;color:var(--mut)}.kpi .kv{font-size:19px;font-weight:700;margin-top:3px}
 .kpi.hl{background:var(--tealb);border-color:var(--tealbd)}
+.kpi.hero{grid-column:1/-1;background:var(--tealb);border-color:var(--tealbd);text-align:center;padding:18px}
+.kpi.hero .kl{font-size:13px;letter-spacing:.5px}
+.kpi.hero .kv{font-size:40px;color:var(--teal);margin-top:6px}
 footer{color:var(--mut);font-size:11.5px;line-height:1.75;border-top:1px solid var(--bd);padding-top:16px;margin-top:6px}
 footer b{color:var(--txt)}
 .leaflet-popup-content{font-family:'Inter',sans-serif;font-size:13px}
@@ -239,9 +242,10 @@ function calc(){
  var vf=precio*Math.pow(1+rev,yrs),gan=(vf-precio)+noi*yrs,roi=precio>0?gan/precio:null;
  function pct(x){return x==null?'—':(x*100).toFixed(1)+'%'}
  function usd(x){return 'USD '+nf(Math.round(x))}
- var k=[['Precio estimado',usd(precio),''],['Cap rate',pct(cap),'hl'],['Yield bruto',pct(yld),''],
-   ['GRM',grm==null?'—':Math.round(grm)+' meses',''],['Repago',pay==null?'—':Math.round(pay)+' anos',''],
-   ['Valor a '+yrs+' anos',usd(vf),''],['Ganancia total',usd(gan),'hl'],['ROI total',pct(roi),'']];
+ var k=[['Yield bruto anual',pct(yld),'hero'],
+   ['Precio estimado',usd(precio),''],['GRM',grm==null?'—':Math.round(grm)+' meses',''],
+   ['Repago',pay==null?'—':Math.round(pay)+' anos',''],['Valor a '+yrs+' anos',usd(vf),''],
+   ['Ganancia total',usd(gan),'hl'],['ROI total',pct(roi),'']];
  $('#cKpis').innerHTML=k.map(function(x){return '<div class="kpi '+x[2]+'"><div class="kl">'+x[0]+'</div><div class="kv num">'+x[1]+'</div></div>'}).join('');}
 function calcInit(){calcBarrios();calcAuto();calc();
  $('#cTipo').onchange=function(){calcBarrios();calcAuto();calc()};
