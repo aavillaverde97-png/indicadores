@@ -18,21 +18,45 @@
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <style>
-:root{--bg:#edf0fb;--s1:#fff;--s2:#f7f9fe;--bd:#dfe6f6;--bd2:#c4d0ec;
---gold:#b8860b;--goldb:#fffef4;--goldbd:#ddc040;--teal:#0d9488;--tealb:#f0fdf9;
+:root{--bg:#edf0fb;--s1:#fff;--s2:#f7f9fe;--ink:#101828;--bd:#dfe6f6;--bd2:#c4d0ec;
+--gold:#b8860b;--goldb:#fffef4;--goldbd:#ddc040;--teal:#0d9488;--tealb:#f0fdf9;--tealbd:#99e6db;
 --red:#dc2626;--blue:#3b82f6;--txt:#18202e;--mut:#64748b;--mut2:#98a4bc;
 --sh1:0 2px 8px rgba(15,23,55,.05),0 8px 28px rgba(15,23,55,.06);
 --sh0:0 1px 3px rgba(15,23,55,.04),0 1px 2px rgba(15,23,55,.03);}
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--txt);-webkit-font-smoothing:antialiased}
 .num{font-family:'IBM Plex Mono',monospace;font-variant-numeric:tabular-nums}
-.wrap{max-width:1080px;margin:0 auto;padding:24px 16px 56px}
+.wrap{max-width:1160px;margin:0 auto;padding:24px 16px 56px}
 header{display:flex;flex-direction:column;gap:8px;padding:6px 0 18px}
 .brandrow{display:flex;align-items:center;gap:12px}
 .logo{font-family:'Syne',sans-serif;font-weight:800;font-size:30px;letter-spacing:1px;color:var(--txt);line-height:1}
 .tagline{font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--mut);margin-top:3px}
 .kick{font-size:14px;color:var(--mut)}
-.intro{font-size:14px;color:var(--txt);line-height:1.7;margin-bottom:22px;max-width:780px}
+.heroIndex{display:grid;grid-template-columns:minmax(0,1.08fr) minmax(320px,.92fr);gap:18px;align-items:stretch;margin:2px 0 18px}
+.heroCopy{background:var(--ink);color:#fff;border-radius:22px;padding:26px;box-shadow:var(--sh1);min-height:330px;display:flex;flex-direction:column;justify-content:space-between;overflow:hidden;position:relative}
+.heroCopy:after{content:'';position:absolute;right:-120px;bottom:-150px;width:360px;height:360px;border-radius:50%;background:radial-gradient(circle,rgba(13,148,136,.24),rgba(13,148,136,0) 68%);pointer-events:none}
+.eyebrow{font-size:12px;text-transform:uppercase;letter-spacing:1.2px;color:#9fd8cf;font-weight:700}
+.heroCopy h1{font-family:'Syne',sans-serif;font-size:clamp(34px,5vw,62px);line-height:.95;margin:14px 0 16px;max-width:720px}
+.heroCopy p{font-size:15px;line-height:1.65;color:#d6deea;max-width:680px}
+.heroMeta{display:flex;gap:8px;flex-wrap:wrap;margin-top:22px}
+.chip{display:inline-flex;align-items:center;gap:7px;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.08);border-radius:999px;padding:8px 11px;font-size:12px;color:#eef4ff}
+.indexCard{background:var(--s1);border:1px solid var(--bd);border-radius:22px;padding:18px;box-shadow:var(--sh1)}
+.indexTools{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
+.indexTools .fld label{font-weight:600;color:var(--txt)}
+.modebar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.mode{border:1px solid var(--bd);background:var(--s2);border-radius:999px;padding:7px 11px;font-size:12px;color:var(--mut);font-weight:700}
+.mode.on{background:var(--tealb);border-color:#8ad4c9;color:var(--teal)}
+.focusPrice{border-radius:18px;background:linear-gradient(135deg,#f0fdf9,#f8fafc);border:1px solid #cdeee8;padding:18px;margin-bottom:12px}
+.focusPrice .label{font-size:12px;color:var(--mut);font-weight:700;text-transform:uppercase;letter-spacing:.6px}
+.focusPrice .value{font-family:'IBM Plex Mono',monospace;font-size:40px;font-weight:700;color:var(--txt);line-height:1.1;margin-top:6px}
+.focusPrice .sub{font-size:13px;color:var(--mut);margin-top:6px}
+.signalGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px}
+.signal{background:var(--s2);border:1px solid var(--bd);border-radius:14px;padding:11px}
+.signal span{display:block;font-size:11px;color:var(--mut);margin-bottom:4px}.signal b{font-size:17px}
+.quickTable{border:1px solid var(--bd);border-radius:16px;overflow:hidden}
+.quickRow{display:grid;grid-template-columns:1fr auto;gap:10px;padding:10px 12px;border-bottom:1px solid var(--bd);font-size:13px}
+.quickRow:last-child{border-bottom:0}.quickRow b{font-family:'IBM Plex Mono',monospace}
+.intro{font-size:14px;color:var(--txt);line-height:1.7;margin-bottom:22px;max-width:860px}
 .intro b{font-weight:600}
 .upd{align-self:flex-start;margin-top:6px;font-size:11.5px;color:var(--gold);background:var(--goldb);border:1px solid var(--goldbd);border-radius:999px;padding:4px 12px}
 .legalbar{background:var(--s2);border:1px solid var(--bd);border-radius:16px;padding:12px 16px;font-size:12.5px;color:var(--mut);margin-bottom:20px;line-height:1.6}
@@ -58,6 +82,23 @@ select{font-family:inherit;background:var(--s1);color:var(--txt);border:1px soli
 .ofrow{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--bd);font-size:14px}
 .ofrow:last-child{border-bottom:0}
 .dotc{width:11px;height:11px;border-radius:3px;display:inline-block;flex:none}
+.marketGrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.marketList{border:1px solid var(--bd);border-radius:16px;overflow:hidden}
+.marketList h3{font-size:13px;padding:12px;background:var(--s2);border-bottom:1px solid var(--bd)}
+.marketItem{display:grid;grid-template-columns:1fr auto auto;gap:10px;align-items:center;padding:10px 12px;border-bottom:1px solid var(--bd);font-size:13px}
+.marketItem:last-child{border-bottom:0}
+.delta{font-size:12px;border-radius:999px;padding:4px 8px;font-weight:700}
+.delta.pos{background:#fef2f2;color:#b91c1c}.delta.neg{background:#ecfdf5;color:#047857}.delta.neu{background:#f8fafc;color:var(--mut)}
+.moduleNav{position:sticky;top:0;z-index:500;display:flex;gap:8px;flex-wrap:wrap;background:rgba(237,240,251,.92);backdrop-filter:blur(10px);border:1px solid var(--bd);border-radius:18px;padding:8px;margin:0 0 18px}
+.moduleNav a{display:inline-flex;align-items:center;min-height:34px;border-radius:999px;padding:8px 12px;background:var(--s1);border:1px solid var(--bd);color:var(--txt);text-decoration:none;font-size:12px;font-weight:700}
+.moduleNav a:hover{border-color:var(--teal);color:var(--teal)}
+.mapShell{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:14px;align-items:stretch}
+.mapSide{border:1px solid var(--bd);border-radius:18px;background:var(--s2);padding:14px;display:flex;flex-direction:column;gap:12px}
+.mapInfo{background:var(--s1);border:1px solid var(--bd);border-radius:14px;padding:14px}
+.mapInfo h3{font-size:16px;margin-bottom:4px}.mapInfo .big{font-family:'IBM Plex Mono',monospace;font-size:27px;font-weight:700;margin:8px 0 2px}
+.mapTable{border:1px solid var(--bd);border-radius:14px;overflow:hidden;background:var(--s1)}
+.mapRow{display:grid;grid-template-columns:1fr auto;gap:10px;padding:9px 10px;border-bottom:1px solid var(--bd);font-size:12px;cursor:pointer}
+.mapRow:last-child{border-bottom:0}.mapRow:hover{background:var(--tealb)}.mapRow b{font-family:'IBM Plex Mono',monospace}
 .calc{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:16px}
 .fld label{display:block;font-size:12px;color:var(--mut);margin-bottom:5px}
 .fld input,.fld select{width:100%}
@@ -72,7 +113,9 @@ input[type=number]{font-family:inherit;background:var(--s1);border:1px solid var
 footer{color:var(--mut);font-size:11.5px;line-height:1.75;border-top:1px solid var(--bd);padding-top:16px;margin-top:6px}
 footer b{color:var(--txt)}
 .leaflet-popup-content{font-family:'Inter',sans-serif;font-size:13px}
-@media(max-width:560px){.logo{font-size:23px}.cv{height:250px}#map{height:300px}.row{grid-template-columns:92px 1fr auto}}
+@media(max-width:900px){.mapShell{grid-template-columns:1fr}.mapSide{order:-1}}
+@media(max-width:820px){.heroIndex{grid-template-columns:1fr}.heroCopy{min-height:auto}.marketGrid{grid-template-columns:1fr}}
+@media(max-width:560px){.logo{font-size:23px}.cv{height:250px}#map{height:300px}.row{grid-template-columns:92px 1fr auto}.indexTools,.signalGrid{grid-template-columns:1fr}.heroCopy h1{font-size:36px}.focusPrice .value{font-size:32px}}
 </style></head><body><div class="wrap">
 
 <header>
@@ -97,15 +140,51 @@ footer b{color:var(--txt)}
   <div class="upd">Actualizado 2026-06-30</div>
 </header>
 
+<section class="heroIndex">
+  <div class="heroCopy">
+    <div>
+      <div class="eyebrow">Patrimo Index</div>
+      <h1>Precio del m2 en Parana</h1>
+      <p>Un tablero publico para leer el mercado inmobiliario por barrio: precio de referencia, volumen de avisos, dispersion y mapa de calor para tomar decisiones con mas contexto.</p>
+    </div>
+    <div class="heroMeta">
+      <span class="chip">Operacion: venta</span>
+      <span class="chip">Actualizado 2026-06-30</span>
+      <span class="chip">1857 avisos analizados</span>
+    </div>
+  </div>
+  <aside class="indexCard">
+    <div class="modebar"><span class="mode on">Venta</span><span class="mode">USD/m2</span><span class="mode">Barrios oficiales</span></div>
+    <div class="indexTools">
+      <div class="fld"><label>Tipo</label>
+        <select id="tipo"><option value="Departamento">Departamentos</option><option value="Casa">Casas</option><option value="Local">Locales</option></select>
+      </div>
+      <div class="fld"><label>Barrio</label><select id="barrioFocus"></select></div>
+    </div>
+    <div id="focusBox"></div>
+  </aside>
+</section>
+
 <p class="intro"><b>Patrimo</b> muestra el valor de referencia del metro cuadrado en <b>Paraná, Entre Ríos</b>, por barrio, para departamentos, casas y locales en venta. Hoy la mediana es de <b>USD 1173/m2</b> en departamentos y <b>USD 727/m2</b> en casas. Las zonas de mayor valor son Rocamora, Parque Urquiza, Centro; las más accesibles, San Agustín, Oro Verde, 25 de Junio. Datos sobre 1857 avisos, con cartografía de 227 barrios oficiales, actualizados a 2026-06-30.</p>
 
-<div class="ctrls"><label class="mut" style="font-weight:500">Tipo de propiedad:</label>
-  <select id="tipo"><option value="Departamento">Departamentos</option><option value="Casa">Casas</option><option value="Local">Locales</option></select>
-</div>
+<nav class="moduleNav" aria-label="Modulos del monitor">
+  <a href="#resumen">Resumen</a>
+  <a href="#oferta">Oferta</a>
+  <a href="#mapa">Mapa</a>
+  <a href="#ranking">Ranking</a>
+  <a href="#calculadora">Calculadora</a>
+  <a href="#dispersion">Dispersion</a>
+</nav>
 
 <div class="cards" id="cards"></div>
 
-<div class="panel">
+<div class="panel" id="resumen">
+  <h2>Resumen del mercado</h2>
+  <div class="h">Lectura rapida del segmento seleccionado, con barrios por encima y por debajo de la mediana general.</div>
+  <div class="marketGrid" id="marketSummary"></div>
+</div>
+
+<div class="panel" id="oferta">
   <h2>Oferta de inmuebles en venta</h2>
   <div class="h">Composición de los avisos de venta en Paraná por tipo de propiedad.</div>
   <div style="display:flex;gap:24px;flex-wrap:wrap;align-items:center">
@@ -114,26 +193,32 @@ footer b{color:var(--txt)}
   </div>
 </div>
 
-<div class="panel">
+<div class="panel" id="mapa">
   <h2>Mapa de precios por barrio</h2>
   <div class="h">227 barrios oficiales. Color = precio del m² (verde más accesible &rarr; rojo más alto). Dato propio cuando hay muestra suficiente; si no, se completa por delegación.</div>
-  <div id="map"></div>
+  <div class="mapShell">
+    <div id="map"></div>
+    <aside class="mapSide">
+      <div class="mapInfo" id="mapInfo"></div>
+      <div class="mapTable" id="mapTable"></div>
+    </aside>
+  </div>
   <div class="maplegend"><span class="sw" style="background:linear-gradient(90deg,#0d9488,#b8860b,#dc2626)"></span><span>menor a mayor USD/m2</span><span class="srcpill srcb">barrio</span><span class="srcpill srcd">delegación</span><span class="srcpill srcg">global</span></div>
 </div>
 
-<div class="panel">
+<div class="panel" id="ranking">
   <h2>Ranking de precio por m2</h2>
   <div class="h">Mediana de USD/m² por barrio. Muestra el nivel de precios de cada zona.</div>
   <div id="rank"></div>
 </div>
 
-<div class="panel">
+<div class="panel" id="oferta-barrios">
   <h2 id="tmTitle">En venta por barrio</h2>
   <div class="h">Tamaño = cantidad de avisos. Color = precio/m² del barrio.</div>
   <div style="height:380px"><canvas id="tm"></canvas></div>
 </div>
 
-<div class="panel" style="border-color:var(--goldbd)">
+<div class="panel" id="calculadora" style="border-color:var(--goldbd)">
   <h2>Calculadora de inversión</h2>
   <div class="h">Elegí barrio y tamaño: estimamos el precio con datos reales del mercado. Cargá el alquiler mensual para ver la rentabilidad.</div>
   <div class="calc">
@@ -150,7 +235,7 @@ footer b{color:var(--txt)}
   <div class="mut" style="margin-top:10px">Estimación orientativa. El precio sale de la mediana del barrio; podés editarlo.</div>
 </div>
 
-<div class="panel">
+<div class="panel" id="dispersion">
   <h2>Dispersión del mercado</h2>
   <div class="h">Cada punto es un aviso: precio/m² (vertical) según tamaño (horizontal). Da idea del rango de valores.</div>
   <div class="cv"><canvas id="sc"></canvas></div>
@@ -168,7 +253,39 @@ function heat(v,lo,hi){var t=hi>lo?(v-lo)/(hi-lo):.5;t=Math.max(0,Math.min(1,t))
  if(t<.5){var k=t/.5;return 'rgb('+lerp(13,184,k)+','+lerp(148,134,k)+','+lerp(136,11,k)+')';}
  var k=(t-.5)/.5;return 'rgb('+lerp(184,220,k)+','+lerp(134,38,k)+','+lerp(11,38,k)+')';}
 function nf(n){return n.toLocaleString('es-AR')}
+function usd(n){return 'USD '+nf(Math.round(n))}
 var MUT='#64748b',GRID='#e6ebf7';
+function typeName(t){return t=='Casa'?'casas':(t=='Local'?'locales':'departamentos')}
+function samplesFor(t){return t=='Casa'?[120,180,240]:(t=='Local'?[35,75,120]:[35,55,75])}
+function pctLabel(x){if(x==null||!isFinite(x))return '-';var v=Math.round(x);return (v>0?'+':'')+v+'%'}
+function deltaClass(x){return x>4?'pos':(x<-4?'neg':'neu')}
+function rowsFor(a){return a.map(function(b){return '<div class="marketItem"><span>'+b.barrio+'</span><b class="num">USD '+nf(b.val)+'</b><span class="delta '+deltaClass(b.idx)+'">'+pctLabel(b.idx)+'</span></div>'}).join('')}
+function refreshBarrioOptions(){var t=$('#tipo').value,sel=$('#barrioFocus'),prev=sel.value;
+ var a=P.barrio_index.filter(function(b){return b[t]!=null}).sort(function(x,y){return y[t]-x[t]});
+ sel.innerHTML=a.map(function(b){return '<option value="'+b.barrio+'">'+b.barrio+'</option>'}).join('');
+ if(prev&&a.some(function(b){return b.barrio==prev}))sel.value=prev;}
+function indexHero(){var t=$('#tipo').value;refreshBarrioOptions();
+ var b=$('#barrioFocus').value,rec=P.barrio_index.find(function(x){return x.barrio==b&&x[t]!=null});
+ var med=P.med[t],ppm=rec?rec[t]:med,n=rec?rec[t+'_n']:null,idx=med?100*(ppm/med-1):null;
+ var quick=samplesFor(t).map(function(m){return '<div class="quickRow"><span>'+m+' m2 estimados</span><b>'+usd(ppm*m)+'</b></div>'}).join('');
+ $('#focusBox').innerHTML='<div class="focusPrice"><div class="label">'+(rec?rec.barrio:'Parana')+' - '+typeName(t)+'</div><div class="value">USD '+nf(ppm)+'/m2</div><div class="sub">'+pctLabel(idx)+' contra la mediana de Parana'+(n?' · '+n+' avisos con muestra':'')+'</div></div>'+
+ '<div class="signalGrid"><div class="signal"><span>Mediana ciudad</span><b class="num">USD '+nf(med||0)+'</b></div><div class="signal"><span>Muestra</span><b class="num">'+(n||'-')+'</b></div><div class="signal"><span>Barrios</span><b class="num">'+P.n_barrios_oficiales+'</b></div></div>'+
+ '<div class="quickTable">'+quick+'</div>';}
+function marketSummary(){var t=$('#tipo').value,med=P.med[t]||0;
+ var a=P.barrio_index.filter(function(b){return b[t]!=null}).map(function(b){return {barrio:b.barrio,val:b[t],idx:med?100*(b[t]/med-1):0}}).sort(function(x,y){return y.val-x.val});
+ var top=a.slice(0,5),bottom=a.slice(-5).reverse();
+ $('#marketSummary').innerHTML='<div class="marketList"><h3>Mayor valor relativo</h3>'+rowsFor(top)+'</div><div class="marketList"><h3>Mas accesibles</h3>'+rowsFor(bottom)+'</div>';}
+function mapInfoHtml(p,t){var k='ppm_'+t,sk='src_'+t,v=p&&p[k],med=P.med[t]||0,idx=v&&med?100*(v/med-1):null;
+ return '<h3>'+(p?p.barrio:'Parana')+'</h3><div class="mut">'+(p&&p.deleg?p.deleg:'Selecciona un barrio del mapa')+'</div>'+
+ '<div class="big">'+(v?'USD '+nf(v)+'/m2':'sin dato')+'</div>'+
+ '<div class="mut">'+(v?pctLabel(idx)+' contra la mediana de '+typeName(t):'Pasa el cursor por una zona para ver detalle')+'</div>'+
+ '<div style="margin-top:10px"><span class="delta '+deltaClass(idx||0)+'">'+(p?srcLabel(p[sk]):'monitor de precios')+'</span></div>'}
+function setMapInfo(p,t){$('#mapInfo').innerHTML=mapInfoHtml(p,t)}
+function renderMapTable(t){if(!P.choropleth||!P.choropleth.features){return}
+ var k='ppm_'+t,rows=P.choropleth.features.map(function(f){return f.properties}).filter(function(p){return p[k]!=null}).sort(function(a,b){return b[k]-a[k]}).slice(0,8);
+ $('#mapTable').innerHTML=rows.map(function(p){return '<div class="mapRow" data-b="'+encodeURIComponent(p.barrio)+'"><span>'+p.barrio+'</span><b>USD '+nf(p[k])+'</b></div>'}).join('');
+ Array.prototype.forEach.call(document.querySelectorAll('#mapTable .mapRow'),function(el){el.onclick=function(){var name=decodeURIComponent(el.getAttribute('data-b'));
+  if(!mapLayer)return;mapLayer.eachLayer(function(l){if(l.feature&&l.feature.properties.barrio==name){setMapInfo(l.feature.properties,$('#tipo').value);if(l.getBounds)map.fitBounds(l.getBounds(),{padding:[18,18]});l.openPopup();}})}})}
 
 function cards(){var t=$('#tipo').value;
  $('#cards').innerHTML=[['Avisos en venta',nf(P.n_venta)],['Con precio/m2',nf(P.n_ppm)],
@@ -201,13 +318,14 @@ function drawMap(){var t=$('#tipo').value;
    color:'#18202e',weight:s=='barrio'?1.05:.55,opacity:s=='barrio'?.55:.28,
    fillColor:v?heat(v,lo,hi):'#c4d0ec',fillOpacity:srcOpacity(s)
   }},
-  onEachFeature:function(f,l){var p=f.properties,v=p[k],s=p[sk];
-   l.bindPopup('<b>'+p.barrio+'</b><br><span class="mut">'+(p.deleg||'')+'</span><br>'+
-    (v?nf(v)+' USD/m2':'sin dato')+'<br>'+srcLabel(s));
-   l.on({mouseover:function(){l.setStyle({weight:1.8,opacity:.9})},mouseout:function(){mapLayer.resetStyle(l)}});
-  }
- }).addTo(map);
- if(!drawMap.fitDone){map.fitBounds(mapLayer.getBounds(),{padding:[8,8]});drawMap.fitDone=true}
+   onEachFeature:function(f,l){var p=f.properties,v=p[k],s=p[sk];
+    l.bindPopup('<b>'+p.barrio+'</b><br><span class="mut">'+(p.deleg||'')+'</span><br>'+
+     (v?nf(v)+' USD/m2':'sin dato')+'<br>'+srcLabel(s));
+    l.on({mouseover:function(){l.setStyle({weight:1.8,opacity:.9});setMapInfo(p,t)},click:function(){setMapInfo(p,t)},mouseout:function(){mapLayer.resetStyle(l)}});
+   }
+  }).addTo(map);
+  renderMapTable(t);setMapInfo(P.choropleth.features.find(function(f){return f.properties[k]!=null}).properties,t);
+  if(!drawMap.fitDone){map.fitBounds(mapLayer.getBounds(),{padding:[8,8]});drawMap.fitDone=true}
 }
 
 var chart=null;
@@ -242,8 +360,8 @@ function treemapDraw(){var t=$('#tipo').value,data=P.treemap[t]||[];
    label:function(i){var d=i.raw._data;return nf(d.n)+' avisos'+(d.ppm?' - '+nf(d.ppm)+' USD/m2':'')}}}}}});}
 
 function safe(fn){try{fn()}catch(e){console.error(fn.name||'render',e)}}
-function renderAll(){safe(cards);safe(rank);safe(drawMap);safe(scatter);safe(treemapDraw);}
-$('#tipo').onchange=renderAll;renderAll();safe(don);
+function renderAll(){safe(indexHero);safe(marketSummary);safe(cards);safe(rank);safe(drawMap);safe(scatter);safe(treemapDraw);}
+$('#tipo').onchange=renderAll;$('#barrioFocus').onchange=function(){safe(indexHero)};renderAll();safe(don);
 
 // calculadora de inversion
 function calcBarrios(){var t=$('#cTipo').value,sel=$('#cBarrio'),prev=sel.value;
