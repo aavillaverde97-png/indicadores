@@ -4,6 +4,9 @@
 
 # Excepciones: lo unico que puede subirse
 !index.html
+!favicon.ico
+!favicon.png
+!favicon.svg
 !robots.txt
 !sitemap.xml
 !.nojekyll
