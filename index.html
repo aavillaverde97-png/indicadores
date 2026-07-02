@@ -1,16 +1,16 @@
 <!DOCTYPE html><html lang="es"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Precio del m2 en Parana por barrio | Patrimo - Indice Inmobiliario</title>
+<title>Patrimo — Monitor de datos públicos inmobiliarios en Paraná | precio del m² por barrio</title>
 <meta name="description" content="Precio del metro cuadrado en Paraná (Entre Ríos) por barrio. Departamentos mediana USD 1173/m2, casas USD 727/m2. Datos de mercado actualizados.">
 <meta name="keywords" content="precio metro cuadrado Parana, propiedades Parana, departamentos en venta Parana, casas en venta Parana, valor m2 por barrio, mercado inmobiliario Entre Rios, Patrimo">
 <meta name="robots" content="index,follow"><meta name="author" content="Patrimo">
-<link rel="canonical" href="https://aavillaverde97-png.github.io/indicadores/">
-<meta property="og:type" content="website"><meta property="og:title" content="Precio del m2 en Parana por barrio | Patrimo">
-<meta property="og:description" content="Precio del metro cuadrado en Paraná (Entre Ríos) por barrio. Departamentos mediana USD 1173/m2, casas USD 727/m2. Datos de mercado actualizados."><meta property="og:url" content="https://aavillaverde97-png.github.io/indicadores/">
+<link rel="canonical" href="https://patrimoapp.com/">
+<meta property="og:type" content="website"><meta property="og:title" content="Patrimo — Monitor de datos públicos inmobiliarios en Paraná">
+<meta property="og:description" content="Precio del metro cuadrado en Paraná (Entre Ríos) por barrio. Departamentos mediana USD 1173/m2, casas USD 727/m2. Datos de mercado actualizados."><meta property="og:url" content="https://patrimoapp.com/">
 <meta property="og:locale" content="es_AR"><meta property="og:site_name" content="Patrimo">
-<meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="Precio del m2 en Parana por barrio | Patrimo">
+<meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="Patrimo — Monitor de datos públicos inmobiliarios en Paraná">
 <meta name="twitter:description" content="Precio del metro cuadrado en Paraná (Entre Ríos) por barrio. Departamentos mediana USD 1173/m2, casas USD 727/m2. Datos de mercado actualizados.">
-<script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebSite", "name": "Patrimo", "url": "https://aavillaverde97-png.github.io/indicadores/", "inLanguage": "es-AR", "description": "Precio del metro cuadrado en Paraná (Entre Ríos) por barrio. Departamentos mediana USD 1173/m2, casas USD 727/m2. Datos de mercado actualizados.", "publisher": {"@type": "Organization", "name": "Patrimo", "url": "https://aavillaverde97-png.github.io/indicadores/", "areaServed": {"@type": "City", "name": "Parana, Entre Rios, Argentina"}}}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebSite", "name": "Patrimo", "url": "https://patrimoapp.com/", "inLanguage": "es-AR", "description": "Precio del metro cuadrado en Paraná (Entre Ríos) por barrio. Departamentos mediana USD 1173/m2, casas USD 727/m2. Datos de mercado actualizados.", "publisher": {"@type": "Organization", "name": "Patrimo", "url": "https://patrimoapp.com/", "areaServed": {"@type": "City", "name": "Parana, Entre Rios, Argentina"}}}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@300;400;500;600;700;800&family=Syne:wght@700;800&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
@@ -27,11 +27,16 @@
 body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--txt);-webkit-font-smoothing:antialiased}
 .num{font-family:'IBM Plex Mono',monospace;font-variant-numeric:tabular-nums}
 .wrap{max-width:1160px;margin:0 auto;padding:24px 16px 56px}
-header{display:flex;flex-direction:column;gap:8px;padding:6px 0 18px}
-.brandrow{display:flex;align-items:center;gap:12px}
-.logo{font-family:'Syne',sans-serif;font-weight:800;font-size:30px;letter-spacing:1px;color:var(--txt);line-height:1}
+header{display:flex;flex-direction:row;align-items:center;justify-content:space-between;gap:12px;padding:6px 0 16px}
+.brandrow{display:flex;align-items:center;gap:11px}
+.logo{font-family:'Syne',sans-serif;font-weight:800;font-size:28px;letter-spacing:1px;color:var(--txt);line-height:1}
 .tagline{font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--mut);margin-top:3px}
 .kick{font-size:14px;color:var(--mut)}
+.hero{background:var(--ink);color:#fff;border-radius:20px;padding:24px 28px;box-shadow:var(--sh1);margin:2px 0 20px;position:relative;overflow:hidden}
+.hero:after{content:'';position:absolute;right:-110px;bottom:-150px;width:340px;height:340px;border-radius:50%;background:radial-gradient(circle,rgba(13,148,136,.22),rgba(13,148,136,0) 68%);pointer-events:none}
+.hero h1{font-family:'Syne',sans-serif;font-size:clamp(26px,3.6vw,44px);line-height:1.02;margin-bottom:9px;max-width:840px}
+.hero p{font-size:14px;line-height:1.6;color:#d6deea;max-width:640px}
+#explorador .indexCard{border:0;box-shadow:none;padding:0;background:transparent}
 .heroIndex{display:grid;grid-template-columns:minmax(0,1.08fr) minmax(320px,.92fr);gap:18px;align-items:stretch;margin:2px 0 18px}
 .heroCopy{background:var(--ink);color:#fff;border-radius:22px;padding:26px;box-shadow:var(--sh1);min-height:330px;display:flex;flex-direction:column;justify-content:space-between;overflow:hidden;position:relative}
 .heroCopy:after{content:'';position:absolute;right:-120px;bottom:-150px;width:360px;height:360px;border-radius:50%;background:radial-gradient(circle,rgba(13,148,136,.24),rgba(13,148,136,0) 68%);pointer-events:none}
@@ -119,8 +124,9 @@ footer b{color:var(--txt)}
 </style></head><body><div class="wrap">
 
 <header>
+  <div class="upd">Actualizado 2026-06-30</div>
   <div class="brandrow">
-    <svg viewBox="0 0 64 66" width="42" height="43" aria-hidden="true" class="mark">
+    <svg viewBox="0 0 64 66" width="38" height="39" aria-hidden="true" class="mark">
       <rect x="8" y="10" width="48" height="6" rx="2" fill="#18202e"/>
       <rect x="40" y="10" width="16" height="6" rx="2" fill="#0d9488"/>
       <rect x="12" y="19" width="40" height="4" rx="2" fill="#18202e"/>
@@ -131,52 +137,23 @@ footer b{color:var(--txt)}
       <rect x="8" y="58" width="48" height="6" rx="2" fill="#18202e"/>
       <rect x="40" y="58" width="16" height="6" rx="2" fill="#b8860b"/>
     </svg>
-    <div>
-      <div class="logo">PATRIMO</div>
-      <div class="tagline">Protegemos lo que construye tu futuro</div>
-    </div>
+    <div class="logo">PATRIMO</div>
   </div>
-  <div class="kick">Índice inmobiliario de Paraná &mdash; datos de mercado, abiertos</div>
-  <div class="upd">Actualizado 2026-06-30</div>
 </header>
 
-<section class="heroIndex">
-  <div class="heroCopy">
-    <div>
-      <div class="eyebrow">Patrimo Index</div>
-      <h1>Precio del m2 en Parana</h1>
-      <p>Un tablero publico para leer el mercado inmobiliario por barrio: precio de referencia, volumen de avisos, dispersion y mapa de calor para tomar decisiones con mas contexto.</p>
-    </div>
-    <div class="heroMeta">
-      <span class="chip">Operacion: venta</span>
-      <span class="chip">Actualizado 2026-06-30</span>
-      <span class="chip">1857 avisos analizados</span>
-    </div>
-  </div>
-  <aside class="indexCard">
-    <div class="modebar"><span class="mode on">Venta</span><span class="mode">USD/m2</span><span class="mode">Barrios oficiales</span></div>
-    <div class="indexTools">
-      <div class="fld"><label>Tipo</label>
-        <select id="tipo"><option value="Departamento">Departamentos</option><option value="Casa">Casas</option><option value="Local">Locales</option></select>
-      </div>
-      <div class="fld"><label>Criterio</label>
-        <select id="modo"><option value="barrio">Por barrio oficial</option><option value="zona">Por zona inmobiliaria</option></select>
-      </div>
-      <div class="fld"><label>Barrio</label><select id="barrioFocus"></select></div>
-    </div>
-    <div id="focusBox"></div>
-  </aside>
+<section class="hero">
+  <h1>Monitor de datos públicos inmobiliarios &middot; Paraná</h1>
+  <p>Precios de referencia del m², oferta y mapa de calor por barrio para casas, departamentos y locales en venta. Datos de mercado, abiertos &mdash; sobre 1857 avisos.</p>
 </section>
-
-<p class="intro"><b>Patrimo</b> muestra el valor de referencia del metro cuadrado en <b>Paraná, Entre Ríos</b>, por barrio, para departamentos, casas y locales en venta. Hoy la mediana es de <b>USD 1173/m2</b> en departamentos y <b>USD 727/m2</b> en casas. Las zonas de mayor valor son Rocamora, Parque Urquiza, Centro; las más accesibles, San Agustín, Oro Verde, 25 de Junio. Datos sobre 1857 avisos, con cartografía de 227 barrios oficiales, actualizados a 2026-06-30.</p>
 
 <nav class="moduleNav" aria-label="Modulos del monitor">
   <a href="#resumen">Resumen</a>
-  <a href="#oferta">Oferta</a>
   <a href="#mapa">Mapa</a>
   <a href="#ranking">Ranking</a>
-  <a href="#calculadora">Calculadora</a>
+  <a href="#explorador">Explorar barrio</a>
+  <a href="#oferta">Oferta</a>
   <a href="#dispersion">Dispersion</a>
+  <a href="#calculadora">Calculadora</a>
 </nav>
 
 <div class="cards" id="cards"></div>
@@ -185,20 +162,6 @@ footer b{color:var(--txt)}
   <h2>Resumen del mercado</h2>
   <div class="h">Lectura rapida del segmento seleccionado, con barrios por encima y por debajo de la mediana general.</div>
   <div class="marketGrid" id="marketSummary"></div>
-</div>
-
-<div class="panel" id="oferta">
-  <h2>Oferta de inmuebles en venta</h2>
-  <div class="h">Composición de los avisos de venta en Paraná por tipo de propiedad.</div>
-  <div style="display:flex;gap:24px;flex-wrap:wrap;align-items:center">
-    <div style="position:relative;width:200px;height:200px"><canvas id="don"></canvas></div>
-    <div id="oftab" style="flex:1;min-width:220px"></div>
-  </div>
-  <div style="margin-top:22px">
-    <h2 id="odTitle" style="font-size:16px">Oferta por tamaño</h2>
-    <div class="h">Cuántos avisos hay según dormitorios (monoambiente, 1, 2, 3, 4+). Incluye las dos fuentes relevadas.</div>
-    <div id="ofdorm"></div>
-  </div>
 </div>
 
 <div class="panel" id="mapa">
@@ -220,10 +183,48 @@ footer b{color:var(--txt)}
   <div id="rank"></div>
 </div>
 
+<div class="panel" id="explorador">
+  <h2>Explorá un barrio</h2>
+  <div class="h">Elegí tipo de propiedad, criterio y barrio para ver su precio de referencia y cómo se compara con la ciudad.</div>
+  <div class="indexCard">
+    <div class="modebar"><span class="mode on">Venta</span><span class="mode">USD/m2</span><span class="mode">Barrios oficiales</span></div>
+    <div class="indexTools">
+      <div class="fld"><label>Tipo</label>
+        <select id="tipo"><option value="Departamento">Departamentos</option><option value="Casa">Casas</option><option value="Local">Locales</option></select>
+      </div>
+      <div class="fld"><label>Criterio</label>
+        <select id="modo"><option value="barrio">Por barrio oficial</option><option value="zona">Por zona inmobiliaria</option></select>
+      </div>
+      <div class="fld"><label>Barrio</label><select id="barrioFocus"></select></div>
+    </div>
+    <div id="focusBox"></div>
+  </div>
+</div>
+
+<div class="panel" id="oferta">
+  <h2>Oferta de inmuebles en venta</h2>
+  <div class="h">Composición de los avisos de venta en Paraná por tipo de propiedad.</div>
+  <div style="display:flex;gap:24px;flex-wrap:wrap;align-items:center">
+    <div style="position:relative;width:200px;height:200px"><canvas id="don"></canvas></div>
+    <div id="oftab" style="flex:1;min-width:220px"></div>
+  </div>
+  <div style="margin-top:22px">
+    <h2 id="odTitle" style="font-size:16px">Oferta por tamaño</h2>
+    <div class="h">Cuántos avisos hay según dormitorios (monoambiente, 1, 2, 3, 4+). Incluye las dos fuentes relevadas.</div>
+    <div id="ofdorm"></div>
+  </div>
+</div>
+
 <div class="panel" id="oferta-barrios">
   <h2 id="tmTitle">En venta por barrio</h2>
   <div class="h">Tamaño = cantidad de avisos. Color = precio/m² del barrio.</div>
   <div style="height:380px"><canvas id="tm"></canvas></div>
+</div>
+
+<div class="panel" id="dispersion">
+  <h2>Dispersión del mercado</h2>
+  <div class="h">Cada punto es un aviso: precio/m² (vertical) según tamaño (horizontal). Las líneas punteadas marcan la mediana. <span class="srcpill srcb">Clasionce</span> <span class="srcpill srcd">Zonaprop</span></div>
+  <div class="cv"><canvas id="sc"></canvas></div>
 </div>
 
 <div class="panel" id="calculadora" style="border-color:var(--goldbd)">
@@ -243,11 +244,7 @@ footer b{color:var(--txt)}
   <div class="mut" style="margin-top:10px">Estimación orientativa. El precio sale de la mediana del barrio; podés editarlo.</div>
 </div>
 
-<div class="panel" id="dispersion">
-  <h2>Dispersión del mercado</h2>
-  <div class="h">Cada punto es un aviso: precio/m² (vertical) según tamaño (horizontal). Las líneas punteadas marcan la mediana. <span class="srcpill srcb">Clasionce</span> <span class="srcpill srcd">Zonaprop</span></div>
-  <div class="cv"><canvas id="sc"></canvas></div>
-</div>
+<p class="intro"><b>Patrimo</b> muestra el valor de referencia del metro cuadrado en <b>Paraná, Entre Ríos</b>, por barrio, para departamentos, casas y locales en venta. Hoy la mediana es de <b>USD 1173/m2</b> en departamentos y <b>USD 727/m2</b> en casas. Las zonas de mayor valor son Rocamora, Parque Urquiza, Centro; las más accesibles, San Agustín, Oro Verde, 25 de Junio. Datos sobre 1857 avisos, con cartografía de 227 barrios oficiales, actualizados a 2026-06-30.</p>
 
 <footer>
   Valores de referencia con fines informativos. No constituye una tasación ni asesoramiento profesional. &copy; 2026 Patrimo. Todos los derechos reservados.
