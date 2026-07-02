@@ -383,9 +383,9 @@ var chart=null;
 function scatter(){var t=$('#tipo').value;
  var cl=P.points.filter(function(p){return p.t==t&&!p.f}),zp=P.points.filter(function(p){return p.t==t&&p.f=='zp'});
  var all=cl.concat(zp);
- var ys=all.map(function(p){return p.y}).sort(function(a,b){return a-b});
  var xs=all.map(function(p){return p.x}).sort(function(a,b){return a-b});
- var medy=ys.length?ys[Math.floor(ys.length/2)]:null,medx=xs.length?xs[Math.floor(xs.length/2)]:null;
+ // mediana OFICIAL del sitio (misma que cards/ranking), no recalculada sobre los puntos
+ var medy=(P.med&&P.med[t])?P.med[t]:null,medx=xs.length?xs[Math.floor(xs.length/2)]:null;
  if(chart)chart.destroy();
  var medPlugin={id:'medlines',afterDraw:function(c){if(medy==null)return;
   var a=c.ctx,ar=c.chartArea,sx=c.scales.x,sy=c.scales.y;
