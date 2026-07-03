@@ -182,6 +182,9 @@ footer b{color:var(--txt)}
 <div class="panel" id="mapa">
   <h2 id="mapTitle">Mapa de precios por barrio</h2>
   <div class="h" id="mapSub">227 barrios oficiales. Color = precio del m² (verde más accesible &rarr; rojo más alto). Dato propio cuando hay muestra suficiente; si no, se completa por delegación.</div>
+  <div class="ctrls"><label class="mut" style="font-weight:500">Ver el mapa por:</label>
+    <select id="modo"><option value="barrio">Barrio oficial</option><option value="zona">Zona inmobiliaria</option></select>
+  </div>
   <div class="mapShell">
     <div id="map"></div>
     <aside class="mapSide">
@@ -206,9 +209,6 @@ footer b{color:var(--txt)}
     <div class="indexTools">
       <div class="fld"><label>Tipo</label>
         <select id="tipo"><option value="Departamento">Departamentos</option><option value="Casa">Casas</option><option value="Local">Locales</option></select>
-      </div>
-      <div class="fld"><label>Criterio</label>
-        <select id="modo"><option value="barrio">Por barrio oficial</option><option value="zona">Por zona inmobiliaria</option></select>
       </div>
       <div class="fld"><label>Barrio</label><select id="barrioFocus"></select></div>
     </div>
