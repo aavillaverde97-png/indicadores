@@ -87,6 +87,10 @@ select{font-family:inherit;background:var(--s1);color:var(--txt);border:1px soli
 .maplegend{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:10px;color:var(--mut);font-size:12px}
 .sw{width:34px;height:10px;border-radius:999px;display:inline-block}
 .srcpill{display:inline-flex;align-items:center;gap:5px}.srcpill:before{content:'';width:9px;height:9px;border-radius:50%;display:inline-block}
+.srcpill.clk{cursor:pointer;user-select:none;border:1px solid var(--bd);border-radius:999px;padding:3px 10px;transition:opacity .15s,background .15s}
+.srcpill.clk:hover{background:var(--s2)}.srcpill.off{opacity:.4;text-decoration:line-through}
+.srcpill .scn{font-weight:700;color:var(--txt)}.srcpill.off .scn{color:var(--mut)}
+.srcpill.tp:before{background:var(--dot)}.srcpill.sf:before{display:none}
 .srcb:before{background:#0d9488}.srcd:before{background:#b8860b}.srcg:before{background:#98a4bc}.srci:before{background:#7c3aed}
 .cv{position:relative;height:300px}
 .ofrow{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--bd);font-size:14px}
@@ -239,8 +243,23 @@ footer b{color:var(--txt)}
 
 <div class="panel" id="dispersion">
   <h2>Dispersión del mercado</h2>
-  <div class="h">Cada punto es un aviso: precio/m² (vertical) según tamaño (horizontal). Las líneas punteadas marcan la mediana. <span class="srcpill srcb">Clasionce</span> <span class="srcpill srcd">Zonaprop</span> <span class="srcpill srci">Inmobiliarias</span></div>
+  <div class="h">Cada punto es un aviso: precio/m² (vertical) según tamaño (horizontal). <b>Color = tipo</b>, <b>forma = fuente</b>. La curva es la tendencia (potencia) por tipo. Clic en cualquier pill para sumarla o quitarla.</div>
+  <div id="scCtrls" style="margin-bottom:12px">
+    <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:8px">
+      <span class="mut" style="min-width:46px">Tipo</span>
+      <span class="srcpill clk tp" data-tipo="Casa" style="--dot:#0d9488">Casa <span class="scn" data-tc="Casa"></span></span>
+      <span class="srcpill clk tp" data-tipo="Departamento" style="--dot:#18202e">Departamento <span class="scn" data-tc="Departamento"></span></span>
+      <span class="srcpill clk tp off" data-tipo="Local" style="--dot:#b8860b">Local <span class="scn" data-tc="Local"></span></span>
+    </div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
+      <span class="mut" style="min-width:46px">Fuente</span>
+      <span class="srcpill clk sf" data-src="cl">&#9679; Clasionce <span class="scn" data-c="cl"></span></span>
+      <span class="srcpill clk sf" data-src="zp">&#9650; Zonaprop <span class="scn" data-c="zp"></span></span>
+      <span class="srcpill clk sf" data-src="inm">&#9670; Inmobiliarias <span class="scn" data-c="inm"></span></span>
+    </div>
+  </div>
   <div class="cv"><canvas id="sc"></canvas></div>
+  <div class="mut" id="scTrend" style="margin-top:10px"></div>
 </div>
 
 <div class="panel" id="terreno">
@@ -408,29 +427,49 @@ function drawMap(){var t=$('#tipo').value,zmode=$('#modo').value=='zona';
 }
 
 var chart=null;
-function scatter(){var t=$('#tipo').value;
- var cl=P.points.filter(function(p){return p.t==t&&!p.f}),zp=P.points.filter(function(p){return p.t==t&&p.f=='zp'});
- var inm=P.points.filter(function(p){return p.t==t&&p.f=='inm'});
- var all=cl.concat(zp).concat(inm);
- var xs=all.map(function(p){return p.x}).sort(function(a,b){return a-b});
- // mediana OFICIAL del sitio (misma que cards/ranking), no recalculada sobre los puntos
- var medy=(P.med&&P.med[t])?P.med[t]:null,medx=xs.length?xs[Math.floor(xs.length/2)]:null;
+var srcOn={cl:true,zp:true,inm:true};
+var tipoOn={'Casa':true,'Departamento':true,'Local':false};
+var TIPOCOL={'Casa':'#0d9488','Departamento':'#18202e','Local':'#b8860b'};
+var SRCSHAPE={cl:'circle',zp:'triangle',inm:'rectRot'};
+var SRCNAME={cl:'Clasionce',zp:'Zonaprop',inm:'Inmobiliarias'};
+function srcOf(p){return p.f=='zp'?'zp':(p.f=='inm'?'inm':'cl');}
+function hexA(hex,al){var h=hex.replace('#','');return 'rgba('+parseInt(h.substr(0,2),16)+','+parseInt(h.substr(2,2),16)+','+parseInt(h.substr(4,2),16)+','+al+')';}
+// ajuste potencia y=a*x^b via minimos cuadrados sobre log-log (+ R2 en escala log)
+function powerFit(pts){var n=0,sx=0,sy=0,sxx=0,sxy=0;
+ pts.forEach(function(p){if(p.x>0&&p.y>0){var lx=Math.log(p.x),ly=Math.log(p.y);n++;sx+=lx;sy+=ly;sxx+=lx*lx;sxy+=lx*ly;}});
+ if(n<4)return null;var dd=n*sxx-sx*sx;if(!dd)return null;
+ var b=(n*sxy-sx*sy)/dd,lna=(sy-b*sx)/n,a=Math.exp(lna),mly=sy/n,ssT=0,ssR=0;
+ pts.forEach(function(p){if(p.x>0&&p.y>0){var ly=Math.log(p.y),pr=lna+b*Math.log(p.x);ssR+=(ly-pr)*(ly-pr);ssT+=(ly-mly)*(ly-mly);}});
+ return {a:a,b:b,r2:ssT>0?1-ssR/ssT:0,n:n};}
+function scatter(){
+ var TS=['Casa','Departamento','Local'],SS=['cl','zp','inm'];
+ TS.forEach(function(t){var e=document.querySelector('#scCtrls .scn[data-tc="'+t+'"]');if(e)e.textContent=nf(P.points.filter(function(p){return p.t==t}).length);});
+ SS.forEach(function(s){var e=document.querySelector('#scCtrls .scn[data-c="'+s+'"]');if(e)e.textContent=nf(P.points.filter(function(p){return srcOf(p)==s}).length);});
  if(chart)chart.destroy();
- var medPlugin={id:'medlines',afterDraw:function(c){if(medy==null)return;
-  var a=c.ctx,ar=c.chartArea,sx=c.scales.x,sy=c.scales.y;
-  a.save();a.strokeStyle='rgba(24,32,46,.35)';a.setLineDash([5,4]);a.lineWidth=1;
-  var yy=sy.getPixelForValue(medy);a.beginPath();a.moveTo(ar.left,yy);a.lineTo(ar.right,yy);a.stroke();
-  a.fillStyle='#64748b';a.font='11px Inter';a.textAlign='right';a.fillText('mediana '+nf(medy)+' /m2',ar.right-6,yy-5);a.textAlign='left';
-  if(medx!=null){var xx=sx.getPixelForValue(medx);a.beginPath();a.moveTo(xx,ar.top);a.lineTo(xx,ar.bottom);a.stroke();
-   a.fillText(nf(medx)+' m2',xx+5,ar.top+12);}
-  a.restore();}};
- chart=new Chart($('#sc'),{type:'scatter',data:{datasets:[
-  {label:'Clasionce',data:cl.map(function(p){return{x:p.x,y:p.y}}),backgroundColor:'rgba(13,148,136,.45)',pointRadius:3},
-  {label:'Zonaprop',data:zp.map(function(p){return{x:p.x,y:p.y}}),backgroundColor:'rgba(184,134,11,.6)',pointRadius:3.5,pointStyle:'triangle'},
-  {label:'Inmobiliarias',data:inm.map(function(p){return{x:p.x,y:p.y}}),backgroundColor:'rgba(124,58,237,.5)',pointRadius:3.5,pointStyle:'rectRot'}]},
-  options:{plugins:{legend:{display:false},tooltip:{callbacks:{label:function(c){return c.dataset.label+': '+c.raw.x+' m2 - '+nf(c.raw.y)+' USD/m2'}}}},
+ var pointDs=[],lineDs=[],trend=[];
+ TS.forEach(function(t){if(!tipoOn[t])return;var tpts=[];
+  SS.forEach(function(s){if(!srcOn[s])return;
+   var pts=P.points.filter(function(p){return p.t==t&&srcOf(p)==s});if(!pts.length)return;
+   pointDs.push({label:t+' · '+SRCNAME[s],data:pts.map(function(p){return{x:p.x,y:p.y}}),backgroundColor:hexA(TIPOCOL[t],.5),pointRadius:3.2,pointStyle:SRCSHAPE[s]});
+   tpts=tpts.concat(pts);});
+  var fit=powerFit(tpts);
+  if(fit){var xs=tpts.map(function(p){return p.x}),x0=Math.min.apply(null,xs),x1=Math.max.apply(null,xs),ln=[];
+   for(var i=0;i<=24;i++){var x=x0+(x1-x0)*i/24;ln.push({x:Math.round(x),y:Math.round(fit.a*Math.pow(x,fit.b))});}
+   lineDs.push({type:'line',label:'tend '+t,data:ln,borderColor:TIPOCOL[t],borderWidth:2.5,pointRadius:0,fill:false,tension:0});
+   trend.push({t:t,fit:fit});}});
+ chart=new Chart($('#sc'),{type:'scatter',data:{datasets:pointDs.concat(lineDs)},
+  options:{plugins:{legend:{display:false},tooltip:{filter:function(it){return it.dataset.type!='line'},callbacks:{label:function(c){return c.dataset.label+': '+c.raw.x+' m2 - '+nf(c.raw.y)+' USD/m2'}}}},
    scales:{x:{title:{display:true,text:'m2',color:MUT},grid:{color:GRID},ticks:{color:MUT}},
-   y:{title:{display:true,text:'USD/m2',color:MUT},grid:{color:GRID},ticks:{color:MUT}}}},plugins:[medPlugin]});}
+   y:{title:{display:true,text:'USD/m2',color:MUT},grid:{color:GRID},ticks:{color:MUT}}}}});
+ var cap=$('#scTrend');
+ if(cap)cap.innerHTML=trend.length?('<b>Tendencia (potencia) del USD/m² según tamaño:</b> '+trend.map(function(o){var dir=o.fit.b<-0.05?'baja':(o.fit.b>0.05?'sube':'plana');return '<span style="color:'+TIPOCOL[o.t]+'">&#9632;</span> '+o.t+': '+dir+' con el tamaño (exp '+o.fit.b.toFixed(2)+', R²='+o.fit.r2.toFixed(2)+', n='+o.fit.n+')';}).join(' &nbsp; ')):'<span class="mut">Sin datos suficientes para la tendencia.</span>';}
+function scFiltersInit(){var box=$('#scCtrls');if(!box)return;
+ box.querySelectorAll('.tp').forEach(function(p){p.onclick=function(){var k=p.getAttribute('data-tipo');
+   if(tipoOn[k]&&!['Casa','Departamento','Local'].some(function(x){return x!=k&&tipoOn[x]}))return;
+   tipoOn[k]=!tipoOn[k];p.classList.toggle('off',!tipoOn[k]);safe(scatter);};});
+ box.querySelectorAll('.sf').forEach(function(p){p.onclick=function(){var k=p.getAttribute('data-src');
+   if(srcOn[k]&&!['cl','zp','inm'].some(function(x){return x!=k&&srcOn[x]}))return;
+   srcOn[k]=!srcOn[k];p.classList.toggle('off',!srcOn[k]);safe(scatter);};});}
 
 function ofertaDorm(){var t=$('#tipo').value,data=(P.oferta_dorm&&P.oferta_dorm[t])||[];
  var wrap=$('#ofdorm');
@@ -518,8 +557,8 @@ function ppmToggleInit(){var box=$('#ppmToggle');if(!box)return;
    box.querySelectorAll('.mode').forEach(function(x){x.classList.remove('on')});b.classList.add('on');
    ppmMode=b.getAttribute('data-k');safe(lcpChart);};});}
 function safe(fn){try{fn()}catch(e){console.error(fn.name||'render',e)}}
-function renderAll(){safe(indexHero);safe(marketSummary);safe(cards);safe(rank);safe(drawMap);safe(scatter);safe(treemapDraw);safe(ofertaDorm);}
-$('#tipo').onchange=renderAll;$('#modo').onchange=function(){safe(rank);safe(drawMap)};$('#barrioFocus').onchange=function(){safe(indexHero)};renderAll();safe(don);safe(ccChart);safe(lcChart);safe(lcpChart);safe(ppmToggleInit);
+function renderAll(){safe(indexHero);safe(marketSummary);safe(cards);safe(rank);safe(drawMap);safe(treemapDraw);safe(ofertaDorm);}
+$('#tipo').onchange=renderAll;$('#modo').onchange=function(){safe(rank);safe(drawMap)};$('#barrioFocus').onchange=function(){safe(indexHero)};renderAll();safe(scatter);safe(scFiltersInit);safe(don);safe(ccChart);safe(lcChart);safe(lcpChart);safe(ppmToggleInit);
 
 // calculadora de inversion
 function calcBarrios(){var t=$('#cTipo').value,sel=$('#cBarrio'),prev=sel.value;
