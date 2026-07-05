@@ -196,7 +196,7 @@ footer b{color:var(--txt)}
 
 <div class="panel" id="resumen">
   <h2>Resumen del mercado</h2>
-  <div class="h">Lectura rapida del segmento seleccionado, con barrios por encima y por debajo de la mediana general.</div>
+  <div class="h">Barrios ordenados por su precio del m², comparados con la mediana de la ciudad (rojo = más caro, verde = más accesible).</div>
   <div class="marketGrid" id="marketSummary"></div>
   <div class="credit"><b>Elaboración propia de Patrimo.</b> Fuentes: Clasionce, Zonaprop, Argenprop e inmobiliarias locales (Pixel). Datos públicos de avisos de venta; valores de referencia, no una tasación.</div>
 </div>
@@ -366,8 +366,15 @@ function refreshBarrioOptions(){var sel=$('#barrioFocus');if(!sel||!P.choropleth
 function indexHero(){refreshBarrioOptions();showBarrio(findFeat($('#barrioFocus').value));}
 function marketSummary(){var t=$('#tipo').value,med=P.med[t]||0;
  var a=P.barrio_index.filter(function(b){return b[t]!=null}).map(function(b){return {barrio:b.barrio,val:b[t],idx:med?100*(b[t]/med-1):0}}).sort(function(x,y){return y.val-x.val});
- var top=a.slice(0,5),bottom=a.slice(-5).reverse();
- $('#marketSummary').innerHTML='<div class="marketList"><h3>Mayor valor relativo</h3>'+rowsFor(top)+'</div><div class="marketList"><h3>Mas accesibles</h3>'+rowsFor(bottom)+'</div>';}
+ var box=$('#marketSummary'),tn=typeName(t),Tn=tn.charAt(0).toUpperCase()+tn.slice(1);
+ if(!a.length){box.innerHTML='<div class="mut" style="grid-column:1/-1;padding:6px 2px">Todavía no hay barrios con muestra suficiente de '+tn+' para este resumen. Mirá el mapa y el ranking más arriba.</div>';return;}
+ // top-5 / bottom-5 solo si hay >=10 barrios (si no, las dos listas se pisan) -> con pocos, una sola lista
+ if(a.length<10){
+  box.innerHTML='<div class="marketList" style="grid-column:1/-1"><h3>'+Tn+' por valor del m² <span class="mut" style="font-weight:400">(vs. mediana de la ciudad)</span></h3>'+rowsFor(a)+'</div>';
+ }else{
+  var top=a.slice(0,5),bottom=a.slice(-5).reverse();
+  box.innerHTML='<div class="marketList"><h3>Mayor valor relativo</h3>'+rowsFor(top)+'</div><div class="marketList"><h3>Más accesibles</h3>'+rowsFor(bottom)+'</div>';
+ }}
 function findFeat(name){if(!P.choropleth||!name)return null;var f=P.choropleth.features.find(function(f){return f.properties.barrio==name});return f?f.properties:null;}
 function showBarrio(p){var t=$('#tipo').value,zmode=$('#modo').value=='zona';
  var k=(zmode?'ppmz_':'ppm_')+t,sk=(zmode?'srcz_':'src_')+t,v=p?p[k]:null,med=P.med[t]||0,idx=v&&med?100*(v/med-1):null;
