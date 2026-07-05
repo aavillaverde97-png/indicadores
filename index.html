@@ -468,9 +468,12 @@ function powerFit(pts){var n=0,sx=0,sy=0,sxx=0,sxy=0;
  pts.forEach(function(p){if(p.x>0&&p.y>0){var ly=Math.log(p.y),pr=lna+b*Math.log(p.x);ssR+=(ly-pr)*(ly-pr);ssT+=(ly-mly)*(ly-mly);}});
  return {a:a,b:b,r2:ssT>0?1-ssR/ssT:0,n:n};}
 function scatter(){
- var TS=['Casa','Departamento','Local'],SS=['cl','zp','inm'];
- TS.forEach(function(t){var e=document.querySelector('#scCtrls .scn[data-tc="'+t+'"]');if(e)e.textContent=nf(P.points.filter(function(p){return p.t==t}).length);});
- SS.forEach(function(s){var e=document.querySelector('#scCtrls .scn[data-c="'+s+'"]');if(e)e.textContent=nf(P.points.filter(function(p){return srcOf(p)==s}).length);});
+ var TS=['Casa','Departamento','Local'],SS=['cl','zp','inm','ap'];
+ // contadores CRUZADOS: cuantos puntos sumaria este pill si lo activo, dado el resto de filtros activos
+ TS.forEach(function(t){var e=document.querySelector('#scCtrls .scn[data-tc="'+t+'"]');
+  if(e)e.textContent=nf(P.points.filter(function(p){return p.t==t&&srcOn[srcOf(p)]}).length);});
+ SS.forEach(function(s){var e=document.querySelector('#scCtrls .scn[data-c="'+s+'"]');
+  if(e)e.textContent=nf(P.points.filter(function(p){return srcOf(p)==s&&tipoOn[p.t]}).length);});
  if(chart)chart.destroy();
  var pointDs=[],lineDs=[],trend=[];
  TS.forEach(function(t){if(!tipoOn[t])return;var tpts=[];
@@ -487,14 +490,27 @@ function scatter(){
   options:{plugins:{legend:{display:false},tooltip:{filter:function(it){return it.dataset.type!='line'},callbacks:{label:function(c){return c.dataset.label+': '+c.raw.x+' m2 - '+nf(c.raw.y)+' USD/m2'}}}},
    scales:{x:{title:{display:true,text:'m2',color:MUT},grid:{color:GRID},ticks:{color:MUT}},
    y:{title:{display:true,text:'USD/m2',color:MUT},grid:{color:GRID},ticks:{color:MUT}}}}});
- var cap=$('#scTrend');
- if(cap)cap.innerHTML=trend.length?('<b>Tendencia (potencia) del USD/m² según tamaño:</b> '+trend.map(function(o){var dir=o.fit.b<-0.05?'baja':(o.fit.b>0.05?'sube':'plana');return '<span style="color:'+TIPOCOL[o.t]+'">&#9632;</span> '+o.t+': '+dir+' con el tamaño (exp '+o.fit.b.toFixed(2)+', R²='+o.fit.r2.toFixed(2)+', n='+o.fit.n+')';}).join(' &nbsp; ')):'<span class="mut">Sin datos suficientes para la tendencia.</span>';}
+ var cap=$('#scTrend'),totalPts=pointDs.reduce(function(s,d){return s+d.data.length},0);
+ if(cap){
+  if(totalPts===0){
+   var actS=SS.filter(function(s){return srcOn[s]}),actT=TS.filter(function(t){return tipoOn[t]});
+   var msg='No hay avisos para esta combinación de tipo y fuente.';
+   if(actS.length==1&&actS[0]=='zp'&&actT.length==1&&actT[0]=='Casa')
+    msg='Zonaprop no tiene casas en esta dispersión: su m² de listado de casas es el terreno total (no la superficie cubierta) y no es comparable al resto — por eso no suma puntos acá. Probá con Departamento, o sumá otra fuente.';
+   else msg+=' Probá activar otra fuente o tipo arriba.';
+   cap.innerHTML='<span class="mut">'+msg+'</span>';
+  } else if(trend.length){
+   cap.innerHTML='<b>Tendencia (potencia) del USD/m² según tamaño:</b> '+trend.map(function(o){var dir=o.fit.b<-0.05?'baja':(o.fit.b>0.05?'sube':'plana');return '<span style="color:'+TIPOCOL[o.t]+'">&#9632;</span> '+o.t+': '+dir+' con el tamaño (exp '+o.fit.b.toFixed(2)+', R²='+o.fit.r2.toFixed(2)+', n='+o.fit.n+')';}).join(' &nbsp; ');
+  } else {
+   cap.innerHTML='<span class="mut">Sin datos suficientes para la tendencia.</span>';
+  }
+ }}
 function scFiltersInit(){var box=$('#scCtrls');if(!box)return;
  box.querySelectorAll('.tp').forEach(function(p){p.onclick=function(){var k=p.getAttribute('data-tipo');
    if(tipoOn[k]&&!['Casa','Departamento','Local'].some(function(x){return x!=k&&tipoOn[x]}))return;
    tipoOn[k]=!tipoOn[k];p.classList.toggle('off',!tipoOn[k]);safe(scatter);};});
  box.querySelectorAll('.sf').forEach(function(p){p.onclick=function(){var k=p.getAttribute('data-src');
-   if(srcOn[k]&&!['cl','zp','inm'].some(function(x){return x!=k&&srcOn[x]}))return;
+   if(srcOn[k]&&!['cl','zp','inm','ap'].some(function(x){return x!=k&&srcOn[x]}))return;
    srcOn[k]=!srcOn[k];p.classList.toggle('off',!srcOn[k]);safe(scatter);};});}
 
 var odChart=null;
