@@ -357,7 +357,8 @@ function typeName(t){return t=='Casa'?'casas':(t=='Local'?'locales':'departament
 function samplesFor(t){return t=='Casa'?[120,180,240]:(t=='Local'?[35,75,120]:[35,55,75])}
 function pctLabel(x){if(x==null||!isFinite(x))return '-';var v=Math.round(x);return (v>0?'+':'')+v+'%'}
 function deltaClass(x){return x>4?'pos':(x<-4?'neg':'neu')}
-function rowsFor(a){return a.map(function(b){return '<div class="marketItem"><span>'+b.barrio+'</span><b class="num">USD '+nf(b.val)+'</b><span class="delta '+deltaClass(b.idx)+'">'+pctLabel(b.idx)+'</span></div>'}).join('')}
+// % vs mediana: dato DESCRIPTIVO (arriba/abajo no es bueno ni malo) -> sin color rojo/verde, solo el signo.
+function rowsFor(a){return a.map(function(b){return '<div class="marketItem"><span>'+b.barrio+'</span><b class="num">USD '+nf(b.val)+'</b><span class="delta neu" title="respecto de la mediana de la ciudad">'+pctLabel(b.idx)+'</span></div>'}).join('')}
 function refreshBarrioOptions(){var sel=$('#barrioFocus');if(!sel||!P.choropleth)return;var prev=sel.value;
  var names=P.choropleth.features.map(function(f){return f.properties.barrio}).filter(function(x){return x});
  names.sort(function(a,b){return a<b?-1:1});
@@ -383,7 +384,7 @@ function showBarrio(p){var t=$('#tipo').value,zmode=$('#modo').value=='zona';
  $('#focusBox').innerHTML='<div class="focusPrice"><div class="label">'+name+' · '+typeName(t)+'</div>'+
   '<div class="value">'+(v?'USD '+nf(v)+'/m²':'sin dato')+'</div>'+
   '<div class="sub">'+(v?(pctLabel(idx)+' vs. la mediana de Paraná'+(zona?' · zona '+zona:'')):'Elegí un barrio en el mapa o la lista')+'</div></div>'+
-  (p?'<div style="margin:10px 0"><span class="delta '+deltaClass(idx||0)+'">'+srcLabel(p[sk])+'</span></div>':'')+
+  (p?'<div style="margin:10px 0"><span class="delta neu">'+srcLabel(p[sk])+'</span></div>':'')+
   (quick?'<div class="quickTable">'+quick+'</div>':'');}
 function zoomToBarrio(name){if(!mapLayer||!name)return;mapLayer.eachLayer(function(l){if(l.feature&&l.feature.properties.barrio==name){if(l.getBounds)map.fitBounds(l.getBounds(),{padding:[18,18]});if(l.openPopup)l.openPopup();}});}
 function selectBarrio(name,zoom){if(!name)return;var sel=$('#barrioFocus');
