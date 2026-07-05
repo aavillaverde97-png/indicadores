@@ -296,13 +296,14 @@ footer b{color:var(--txt)}
 </div>
 
 <div class="panel" id="evolucion">
-  <h2>Evolución del m² — Paraná vs. CABA (mercado madre)</h2>
-  <div class="h">Precio del m² en dólares en el tiempo, para el tipo de propiedad elegido arriba. <b>CABA</b> (deptos usados, serie oficial trimestral desde 2006) queda siempre como referencia del mercado madre; <b>Paraná</b> se suma mes a mes desde julio 2026. En índice, base 100 = jul-2026 para comparar la evolución de cada mercado.</div>
+  <h2 id="evTitle">Evolución del m² — Paraná vs. CABA (mercado madre)</h2>
+  <div class="h" id="evSub">Precio del m² en dólares en el tiempo. <b>CABA</b> (deptos usados, serie oficial trimestral desde 2006) es la referencia del mercado madre; <b>Paraná</b> se suma mes a mes desde julio 2026. En índice, base 100 = jul-2026 para comparar la evolución de cada mercado.</div>
   <div class="modebar" id="evToggle">
     <button type="button" class="mode on" data-k="abs">USD/m²</button>
     <button type="button" class="mode" data-k="idx">Índice base 100 (jul-2026)</button>
   </div>
   <div class="cv"><canvas id="ev"></canvas></div>
+  <div class="mut" id="evCabaNote" style="margin-top:8px"></div>
   <div class="credit"><b>Elaboración propia de Patrimo.</b> CABA: DGEyC-GCBA (banco de datos "mercado inmobiliario", sobre Argenprop). Paraná: Clasionce, Zonaprop e inmobiliarias locales. Valores de referencia, no una tasación.</div>
 </div>
 
@@ -558,18 +559,26 @@ function evDec(f){var a=String(f).split('-');return (+a[0])+((+a[1]-1)/12);}
 var evMode='abs';
 function evChart(){
  var t=$('#tipo').value,key={'Departamento':'departamento','Casa':'casa','Local':'local'}[t]||'departamento';
- var caba=(P.caba||[]).filter(function(x){return x.usado});
+ // CABA (DGEyC) solo mide DEPARTAMENTOS 2-3 amb: comparar casas/locales contra esa serie es peras con manzanas.
+ var conCaba=(t=='Departamento');
+ var caba=conCaba?(P.caba||[]).filter(function(x){return x.usado}):[];
  var par=(P.parana_serie||[]).filter(function(x){return x[key]});
- if(!caba.length){var e=$('#evolucion');if(e)e.style.display='none';return;}
- var baseC=caba[caba.length-1].usado, baseP=par.length?par[0][key]:null;
+ if(conCaba&&!caba.length){var e=$('#evolucion');if(e)e.style.display='none';return;}
+ var eT=$('#evTitle'),eS=$('#evSub'),eN=$('#evCabaNote');
+ if(eT)eT.textContent=conCaba?'Evolución del m² — Paraná vs. CABA (mercado madre)':'Evolución del m² — Paraná · '+typeName(t);
+ if(eS)eS.innerHTML=conCaba
+   ?'Precio del m² en dólares en el tiempo. <b>CABA</b> (deptos usados, serie oficial trimestral desde 2006) es la referencia del mercado madre; <b>Paraná</b> se suma mes a mes desde julio 2026. En índice, base 100 = jul-2026 para comparar la evolución de cada mercado.'
+   :'Precio del m² en dólares en el tiempo para '+typeName(t)+' en Paraná, mes a mes desde julio 2026.';
+ if(eN)eN.textContent=conCaba?'':'CABA no tiene serie oficial de '+typeName(t)+' (la fuente DGEyC solo mide departamentos de 2 y 3 ambientes), por eso no se muestra como referencia en esta pestaña.';
+ var baseC=caba.length?caba[caba.length-1].usado:null, baseP=par.length?par[0][key]:null;
  function yv(v,base){return evMode=='idx'?(base?Math.round(v/base*1000)/10:null):v;}
  var cabaD=caba.map(function(x){return {x:evDec(x.fecha),y:yv(x.usado,baseC),raw:x.usado,trim:x.trim,es:x.estrenar}});
  var parD=par.map(function(x){return {x:evDec(x.fecha||x.mes),y:yv(x[key],baseP),raw:x[key],trim:x.mes}});
  if(evChart.c)evChart.c.destroy();
- evChart.c=new Chart($('#ev'),{data:{datasets:[
-   {type:'line',label:'CABA · deptos usados (referencia)',data:cabaD,borderColor:'#18202e',backgroundColor:'#18202e',borderWidth:2,pointRadius:0,pointHoverRadius:4,tension:.15,fill:false},
-   {type:'line',label:'Paraná · '+typeName(t),data:parD,borderColor:'#0d9488',backgroundColor:'#0d9488',borderWidth:3,pointRadius:2.5,pointHoverRadius:6,tension:.15,fill:false}
- ]},
+ var ds=[];
+ if(conCaba)ds.push({type:'line',label:'CABA · deptos usados (referencia)',data:cabaD,borderColor:'#18202e',backgroundColor:'#18202e',borderWidth:2,pointRadius:0,pointHoverRadius:4,tension:.15,fill:false});
+ ds.push({type:'line',label:'Paraná · '+typeName(t),data:parD,borderColor:'#0d9488',backgroundColor:'#0d9488',borderWidth:3,pointRadius:2.5,pointHoverRadius:6,tension:.15,fill:false});
+ evChart.c=new Chart($('#ev'),{data:{datasets:ds},
   options:{parsing:false,plugins:{legend:{display:true,position:'bottom',labels:{color:MUT,boxWidth:12,font:{size:11},usePointStyle:true}},
    tooltip:{callbacks:{title:function(it){return it[0].raw.trim},label:function(c){var d=c.raw;return c.dataset.label+': '+(evMode=='idx'?(d.y+' (base 100)'):('USD '+nf(d.raw)+'/m²'));}}}},
    scales:{x:{type:'linear',ticks:{color:MUT,stepSize:2,callback:function(v){return Math.round(v)}},grid:{color:GRID},title:{display:true,text:'año',color:MUT}},
