@@ -186,6 +186,7 @@ footer b{color:var(--txt)}
   <a href="#dispersion">Dispersion</a>
   <a href="#terreno">Lote vs construido</a>
   <a href="#construir">Comprar vs construir</a>
+  <a href="#nuevousado">A estrenar vs usado</a>
   <a href="#evolucion">Evolución</a>
   <a href="#calculadora">Calculadora</a>
   <a href="#metodologia">Zonas</a>
@@ -387,12 +388,12 @@ function findFeat(name){if(!P.choropleth||!name)return null;var f=P.choropleth.f
 function showBarrio(p){var t=$('#tipo').value,zmode=$('#modo').value=='zona';
  var k=(zmode?'ppmz_':'ppm_')+t,sk=(zmode?'srcz_':'src_')+t,v=p?p[k]:null,med=P.med[t]||0,idx=v&&med?100*(v/med-1):null;
  var name=p?p.barrio:'Paraná',zona=p?p.zona:null;
- var quick=v?samplesFor(t).map(function(m){return '<div class="quickRow"><span>'+m+' m² estimados</span><b>'+usd(v*m)+'</b></div>'}).join(''):'';
+ var quick=v?samplesFor(t).map(function(m){return '<div class="quickRow"><span>'+m+' m²</span><b>'+usd(v*m)+'</b></div>'}).join(''):'';
  $('#focusBox').innerHTML='<div class="focusPrice"><div class="label">'+name+' · '+typeName(t)+'</div>'+
   '<div class="value">'+(v?'USD '+nf(v)+'/m²':'sin dato')+'</div>'+
   '<div class="sub">'+(v?(pctLabel(idx)+' vs. la mediana de Paraná'+(zona?' · zona '+zona:'')):'Elegí un barrio en el mapa o la lista')+'</div></div>'+
   (p?'<div style="margin:10px 0"><span class="delta neu">'+srcLabel(p[sk])+'</span></div>':'')+
-  (quick?'<div class="quickTable">'+quick+'</div>':'');}
+  (quick?'<div class="mut" style="margin:2px 0 6px;font-size:11.5px">Precio orientativo por tamaño (valor del m² del barrio × superficie):</div><div class="quickTable">'+quick+'</div>':'');}
 function zoomToBarrio(name){if(!mapLayer||!name)return;mapLayer.eachLayer(function(l){if(l.feature&&l.feature.properties.barrio==name){if(l.getBounds)map.fitBounds(l.getBounds(),{padding:[18,18]});if(l.openPopup)l.openPopup();}});}
 function selectBarrio(name,zoom){if(!name)return;var sel=$('#barrioFocus');
  if(sel&&[].some.call(sel.options,function(o){return o.value==name}))sel.value=name;
