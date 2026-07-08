@@ -74,7 +74,7 @@ header{display:flex;flex-direction:row;align-items:center;justify-content:space-
 .c{background:var(--s1);border:1px solid var(--bd);border-radius:20px;padding:16px;box-shadow:var(--sh0)}
 .c .l{color:var(--mut);font-size:12px}.c .v{font-size:23px;font-weight:700;margin-top:4px}
 .c .cs{font-size:11px;color:var(--mut2);margin-top:3px}
-.panel{background:var(--s1);border:1px solid var(--bd);border-radius:24px;padding:18px 20px;margin-bottom:18px;box-shadow:var(--sh1)}
+.panel{background:var(--s1);border:1px solid var(--bd);border-radius:24px;padding:18px 20px;margin-bottom:18px;box-shadow:var(--sh1);scroll-margin-top:var(--navh,110px)}
 .panel h2{font-family:'Syne',sans-serif;font-size:18px;font-weight:700;margin-bottom:3px}
 .panel .h{color:var(--mut);font-size:13px;margin-bottom:14px}
 .ctrls{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:18px}
@@ -149,7 +149,6 @@ footer b{color:var(--txt)}
 </style></head><body><div class="wrap">
 
 <header>
-  <div class="upd">Actualizado 2026-07-04</div>
   <div class="brandrow">
     <svg viewBox="0 0 64 66" width="38" height="39" aria-hidden="true" class="mark">
       <rect x="8" y="10" width="48" height="6" rx="2" fill="#18202e"/>
@@ -262,6 +261,7 @@ footer b{color:var(--txt)}
   <h2 id="tmTitle">En venta por barrio</h2>
   <div class="h">Tamaño = cantidad de avisos. Color = precio/m² del barrio.</div>
   <div style="height:380px"><canvas id="tm"></canvas></div>
+  <div class="maplegend"><span class="sw" style="background:linear-gradient(90deg,#0d9488,#b8860b,#dc2626)"></span><span>menor a mayor USD/m2</span></div>
 </div>
 
 <div class="panel" id="dispersion">
@@ -651,9 +651,14 @@ function treemapDraw(){var t=$('#tipo').value,data=P.treemap[t]||[];
  if(tmChart)tmChart.destroy();
  tmChart=new Chart($('#tm'),{type:'treemap',data:{datasets:[{tree:data,key:'n',spacing:1.5,borderWidth:0,
   backgroundColor:function(c){if(c.type!=='data')return 'transparent';var d=c.raw._data;return d.ppm?heat(d.ppm,lo,hi):'#c4d0ec';},
-  labels:{display:true,color:'#fff',font:{family:'Inter',weight:'600',size:12},
-   formatter:function(c){var d=c.raw._data;return [d.barrio,nf(d.n)];}}}]},
-  options:{plugins:{legend:{display:false},tooltip:{callbacks:{
+  labels:{display:true,color:'#fff',font:{family:'Inter',weight:'600',size:11},
+   formatter:function(c){var d=c.raw._data,w=c.raw.w,h=c.raw.h;
+    if(w<26||h<18)return '';
+    var name=d.barrio,maxChars=Math.max(4,Math.floor(w/6.2));
+    if(name.length>maxChars)name=name.slice(0,maxChars-1)+'…';
+    if(w<58||h<34)return [name];
+    return [name,nf(d.n)+' avisos'];}}}]},
+  options:{maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{
    title:function(i){return i[0].raw._data.barrio},
    label:function(i){var d=i.raw._data;return nf(d.n)+' avisos'+(d.ppm?' - '+nf(d.ppm)+' USD/m2':'')}}}}}});}
 
@@ -813,7 +818,8 @@ function nuevoUsado(){var t=$('#tipo').value,u=(P.nuevo_usado||{})[t],box=$('#nu
   '<div class="kpi"><div class="kl">Usado</div><div class="kv num">USD '+nf(u.usado)+'/m²</div><div class="kl">'+u.usado_n+' avisos</div></div>'+
   '<div class="kpi hl"><div class="kl">Premium de lo nuevo</div><div class="kv num">+'+u.premium+'%</div><div class="kl">sobre el usado</div></div>';}
 function renderAll(){safe(indexHero);safe(marketSummary);safe(cards);safe(rank);safe(drawMap);safe(treemapDraw);safe(ofertaDorm);safe(ofertaEvol);safe(pubEvol);safe(nuevoUsado);}
-$('#tipo').onchange=renderAll;$('#modo').onchange=function(){safe(rank);safe(drawMap)};$('#barrioFocus').onchange=function(){safe(function(){selectBarrio($('#barrioFocus').value,true)})};renderAll();safe(tipoTabsInit);safe(scatter);safe(scFiltersInit);safe(don);safe(ccChart);safe(lcChart);safe(lcpChart);safe(ppmToggleInit);safe(evChart);safe(evToggleInit);safe(pubTopInit);
+function syncNavH(){var nav=document.querySelector('.moduleNav');if(!nav)return;document.documentElement.style.setProperty('--navh',(nav.offsetHeight+14)+'px');}
+$('#tipo').onchange=renderAll;$('#modo').onchange=function(){safe(rank);safe(drawMap)};$('#barrioFocus').onchange=function(){safe(function(){selectBarrio($('#barrioFocus').value,true)})};renderAll();safe(tipoTabsInit);safe(scatter);safe(scFiltersInit);safe(don);safe(ccChart);safe(lcChart);safe(lcpChart);safe(ppmToggleInit);safe(evChart);safe(evToggleInit);safe(pubTopInit);safe(syncNavH);window.addEventListener('resize',function(){safe(syncNavH)});
 
 // calculadora de inversion
 function calcBarrios(){var t=$('#cTipo').value,sel=$('#cBarrio'),prev=sel.value;
