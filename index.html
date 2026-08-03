@@ -422,9 +422,9 @@ footer b{color:var(--txt)}
     <button type="button" class="mode" data-k="idx">Índice base 100 (2026)</button>
   </div>
   <div class="modebar" id="evRangeBar" style="margin-top:8px">
-    <button type="button" class="mode on" data-r="all">Todo</button>
+    <button type="button" class="mode" data-r="all">Todo</button>
     <button type="button" class="mode" data-r="y1">Últ. año</button>
-    <button type="button" class="mode" data-r="ytd">YTD (este año)</button>
+    <button type="button" class="mode on" data-r="ytd">YTD (este año)</button>
   </div>
   <div id="evSeriesToggle" style="display:flex;gap:8px;flex-wrap:wrap;margin:10px 0 2px;align-items:center">
     <span class="mut" style="font-size:11px">Mostrar:</span>
@@ -856,7 +856,10 @@ function ccChart(){
  if(last){$('#ccNote').innerHTML='Cada mes se convierte a dólares con el tipo de cambio mayorista promedio del <b>BCRA</b> de ese mismo mes (de $'+nf(c[0].usd)+' en '+mesLabel(c[0].mes)+' a $'+nf(last.usd)+' en '+mesLabel(last.mes)+'), no con un dólar fijo. Costo en pesos: Colegio de Arquitectos de Entre Ríos.';}
 }
 function evDec(f){var a=String(f).split('-');return (+a[0])+((+a[1]-1)/12);}
-var evMode='abs',evShowCaba=true,evShowConstr=true,evRange='all';
+// evRange arranca en 'ytd' (criterio de Gabriel 2026-08-01): con 'all' el eje va de 2006 a 2026 por
+// la serie de CABA y los 3 puntos de Parana quedan aplastados contra el borde derecho, que es el
+// dato propio y el motivo del panel. El boton "Todo" sigue estando para ver la serie larga.
+var evMode='abs',evShowCaba=true,evShowConstr=true,evRange='ytd';
 function evScopeOptions(){
  var t=$('#tipo').value,sel=$('#evScope');if(!sel)return;
  var prev=sel.value,zonas=[];
@@ -928,7 +931,8 @@ function evChart(){
  if(evc){
   var vis=monthly?parD.filter(function(p){return p.x>=rmin-1e-6&&p.x<=rmax+1e-6&&p.raw!=null}):[];
   if(vis.length>=2){var f=vis[0],l=vis[vis.length-1],ch=100*(l.raw/f.raw-1),
-    col=ch>0.5?'#A02D24':(ch<-0.5?'#3D6B35':'#5C656D'),sg=ch>0?'+':(ch<0?'−':'');
+    // signo = color: + verde / - rojo, igual que el titular y el Resumen
+    col=ch>0.5?'#3D6B35':(ch<-0.5?'#A02D24':'#5C656D'),sg=ch>0?'+':(ch<0?'−':'');
    var mf=mesLabel(f.trim.split('·')[0].trim()),ml=mesLabel(l.trim.split('·')[0].trim());
    evc.innerHTML='<b>'+parLabel+'</b> en el rango: '+mf+' → '+ml+
     ' &nbsp;<b style="color:'+col+'">'+sg+Math.abs(ch).toFixed(1).replace('.',',')+'%</b>'+
