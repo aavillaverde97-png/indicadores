@@ -1,0 +1,22 @@
+# Patrimo
+
+> Plataforma independiente de inteligencia inmobiliaria para Parana, Entre Rios (Argentina). Publica el valor de referencia del m2 por barrio y zona, la oferta, la rentabilidad del alquiler y el costo de construir, a partir de avisos publicos. No es un marketplace ni una inmobiliaria.
+
+Datos actualizados a 2026-09-01. Mediana de venta: USD 1243/m2 en departamentos, USD 725/m2 en casas, sobre 990 avisos relevados, con cartografia de 227 barrios oficiales.
+
+## Que se publica
+- Mediana de USD/m2 por barrio y por zona inmobiliaria, para casa, departamento y local.
+- Oferta en venta por tipo, tamano y publicador; dispersion; lote vs construido.
+- Rentabilidad bruta del alquiler (yield) y anios de recupero, por tipo y por zona.
+- Costo de construir por m2 y comparacion comprar vs construir.
+- Serie de evolucion mensual propia, y CABA como mercado de referencia.
+- Todo en https://patrimoapp.com/ (una sola pagina).
+
+## Metodologia
+- Precios de AVISO (lo que se pide), no de operaciones cerradas: en Argentina no son publicas.
+- Se usa la MEDIANA, no el promedio, para que los extremos no deformen el valor tipico.
+- Fuentes: avisos publicos (Clasionce, Zonaprop, Argenprop, inmobiliarias locales), Colegio de Arquitectos de Entre Rios (costo de obra), BCRA (tipo de cambio).
+- Corrida mensual: cada mes suma un punto a las series de evolucion.
+
+## Licencia
+- Datos agregados bajo CC BY 4.0 (https://creativecommons.org/licenses/by/4.0/). Atribuir a Patrimo (https://patrimoapp.com/).
