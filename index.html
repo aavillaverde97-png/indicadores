@@ -634,10 +634,10 @@ window.addEventListener('resize',function(){placeMedLine()});
 
 var map=L.map('map',{scrollWheelZoom:false}).setView([-31.745,-60.52],12);
 // base con calles (CARTO Voyager)
-L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager_nolabels/{z}/{x}/{y}{r}.png',{attribution:'&copy; OSM &copy; CARTO',maxZoom:20}).addTo(map);
+L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager_nolabels/{z}/{x}/{y}{r}.png?key=cb1_3gjc_1_31c13e5828f89dd12b339dcd',{attribution:'&copy; OSM &copy; CARTO',maxZoom:20}).addTo(map);
 // nombres de calles POR ENCIMA del choropleth (pane superior)
 map.createPane('lbls');map.getPane('lbls').style.zIndex=650;map.getPane('lbls').style.pointerEvents='none';
-L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager_only_labels/{z}/{x}/{y}{r}.png',{pane:'lbls',maxZoom:20}).addTo(map);
+L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager_only_labels/{z}/{x}/{y}{r}.png?key=cb1_3gjc_1_31c13e5828f89dd12b339dcd',{pane:'lbls',maxZoom:20}).addTo(map);
 var mapLayer=null;
 function srcLabel(s){return s=='barrio'?'dato propio del barrio':(s=='zona'?'estimado por su zona inmobiliaria':'referencia general de la ciudad')}
 function srcOpacity(s){return s=='barrio'?.66:(s=='zona'?.5:.24)}
