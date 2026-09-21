@@ -606,8 +606,8 @@ function placeMedLine(){var ln=$('#medLine');if(!ln)return;
 window.addEventListener('resize',function(){placeMedLine()});
 
 var map=L.map('map',{scrollWheelZoom:false}).setView([-31.745,-60.52],12);
-// base con calles (CARTO Voyager)
-L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager_nolabels/{z}/{x}/{y}{r}.png',{attribution:'&copy; OSM &copy; CARTO',maxZoom:20}).addTo(map);
+// base gris claro con calles (Esri World Light Gray). CARTO rastertiles/voyager_nolabels devuelve "API KEY REQUIRED" desde ~zoom 14 (2026-09).
+L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}',{attribution:'Tiles &copy; Esri &mdash; &copy; OSM &copy; CARTO (etiquetas)',maxNativeZoom:16,maxZoom:18}).addTo(map);
 // nombres de calles POR ENCIMA del choropleth (pane superior)
 map.createPane('lbls');map.getPane('lbls').style.zIndex=650;map.getPane('lbls').style.pointerEvents='none';
 L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager_only_labels/{z}/{x}/{y}{r}.png',{pane:'lbls',maxZoom:20}).addTo(map);
