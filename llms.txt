@@ -8,7 +8,7 @@ Datos actualizados a 2026-09-01. Mediana de venta: USD 1250/m2 en departamentos,
 - Mediana de USD/m2 por barrio y por zona inmobiliaria, para casa, departamento y local.
 - Oferta en venta por tipo, tamano y publicador; dispersion; lote vs construido.
 - Rentabilidad bruta del alquiler (yield) y anios de recupero, por tipo y por zona.
-- Costo de construir por m2 y comparacion comprar vs construir.
+- Costo de construir por m2 (Colegio de Arquitectos) contra el precio de mercado, en el grafico de evolucion.
 - Serie de evolucion mensual propia, y CABA como mercado de referencia.
 - Todo en https://patrimoapp.com/ (una sola pagina).
 
