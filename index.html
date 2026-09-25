@@ -527,6 +527,9 @@ function heat(v,lo,hi){var t=hi>lo?(v-lo)/(hi-lo):.5;t=Math.max(0,Math.min(1,t))
 function nf(n){return n.toLocaleString('es-AR')}
 function usd(n){return 'USD '+nf(Math.round(n))}
 var MUT='#5C656D',GRID='#DADED6';
+// todos los canvas viven en un contenedor de alto fijo (.cv u otro): sin esto Chart.js usa proporción 2:1 y
+// el gráfico se desborda sobre el panel de abajo (pasó con "Precio del m² según qué superficie mires")
+if(window.Chart)Chart.defaults.maintainAspectRatio=false;
 function typeName(t){return t=='Casa'?'casas':(t=='Local'?'locales':'departamentos')}
 function samplesFor(t){return t=='Casa'?[120,180,240]:(t=='Local'?[35,75,120]:[35,55,75])}
 function pctLabel(x){if(x==null||!isFinite(x))return '-';var v=Math.round(x);return (v>0?'+':'')+v+'%'}
