@@ -12,6 +12,20 @@ Datos actualizados a 2026-09-01. Mediana de venta: USD 1250/m2 en departamentos,
 - Serie de evolucion mensual propia, y CABA como mercado de referencia.
 - Todo en https://patrimoapp.com/ (una sola pagina).
 
+## Secciones
+- [Mapa y barrios](https://patrimoapp.com/#mapa): precio del m2 por zona inmobiliaria y barrio oficial.
+- [Ranking](https://patrimoapp.com/#ranking): zonas ordenadas por precio del m2 (solo con 10 avisos o mas).
+- [Evolucion](https://patrimoapp.com/#evolucion): serie mensual, CABA de referencia y costo de construir.
+- [Por zona](https://patrimoapp.com/#oferta-barrios): avisos en venta por zona.
+- [Oferta](https://patrimoapp.com/#oferta): oferta por tipo, tamano y publicador.
+- [Rentabilidad](https://patrimoapp.com/#rentabilidad): yield bruto y anios de recupero por zona.
+- [Como agrupamos las zonas](https://patrimoapp.com/#metodologia): que barrios forman cada zona.
+- [Preguntas frecuentes](https://patrimoapp.com/#faq): respuestas con los numeros del mes.
+
+## Autor
+- [Gabriel Villaverde](https://www.linkedin.com/in/villaverdegabriel/): ingeniero de Parana, creador de Patrimo.
+- [Patrimo en LinkedIn](https://www.linkedin.com/company/patrimo-app/)
+
 ## Metodologia
 - Precios de AVISO (lo que se pide), no de operaciones cerradas: en Argentina no son publicas.
 - Se usa la MEDIANA, no el promedio, para que los extremos no deformen el valor tipico.
