@@ -2,7 +2,7 @@
 
 > Plataforma independiente de inteligencia inmobiliaria para Parana, Entre Rios (Argentina). Publica el valor de referencia del m2 por barrio y zona, la oferta, la rentabilidad del alquiler y el costo de construir, a partir de avisos publicos. No es un marketplace ni una inmobiliaria.
 
-Datos actualizados a 2026-11-05. Mediana de venta: USD 1255/m2 en departamentos, USD 714/m2 en casas, sobre 1104 avisos relevados, con cartografia de 227 barrios oficiales.
+Datos actualizados a 2026-11-05. Mediana de venta: USD 1267/m2 en departamentos, USD 714/m2 en casas, sobre 987 avisos relevados, con cartografia de 227 barrios oficiales.
 
 ## Que se publica
 - Mediana de USD/m2 por barrio y por zona inmobiliaria, para casa, departamento y local.
